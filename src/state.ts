@@ -137,20 +137,20 @@ export class State {
   learningRate = 0.03;
   regularizationRate = 0;
   showTestData = false;
-  noise = 0;
+  noise = 10;
   batchSize = 10;
   discretize = false;
   tutorial: string = null;
   percTrainData = 50;
-  activation = nn.Activations.TANH;
+  activation = nn.Activations.LINEAR;
   regularization: nn.RegularizationFunction = null;
   problem = Problem.CLASSIFICATION;
-  initZero = false;
+  initZero = true;
   hideText = false;
   collectStats = false;
-  numHiddenLayers = 1;
+  numHiddenLayers = 0;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [4, 2];
+  networkShape: number[] = [];
   x = true;
   y = true;
   xTimesY = false;
@@ -160,20 +160,43 @@ export class State {
   sinX = false;
   cosY = false;
   sinY = false;
-  dataset: dataset.DataGenerator = dataset.classifyCircleData;
+  dataset: dataset.DataGenerator = dataset.classifyTwoGaussData;
   regDataset: dataset.DataGenerator = dataset.regressPlane;
   seed: string;
+
+  showTestData_hide=true;
+  // stepButton_hide=true;
+  activation_hide=true;
+  noise_hide=true;
+  batchSize_hide=true;
+  regularization_hide=true;
+  resetButton_hide=true;
+  discretize_hide=true;
+  playButton_hide=true;
+  learningRate_hide=true;
+  regularizationRate_hide=true;
+  percTrainData_hide=true;
+  numHiddenLayers_hide=true
+  // xSquared_hide=true;
 
   /**
    * Deserializes the state from the url hash.
    */
   static deserializeState(): State {
+
+    
+    let state = new State();
+    if (state.seed == null) {
+      state.seed = Math.random().toFixed(5);
+    }
+    Math.seedrandom(state.seed);
+    return state;
+
     let map: {[key: string]: string} = {};
     for (let keyvalue of window.location.hash.slice(1).split("&")) {
       let [name, value] = keyvalue.split("=");
       map[name] = value;
     }
-    let state = new State();
 
     function hasKey(name: string): boolean {
       return name in map && map[name] != null && map[name].trim() !== "";
@@ -231,10 +254,7 @@ export class State {
       state[prop] = (map[prop] === "true") ? true : false;
     });
     state.numHiddenLayers = state.networkShape.length;
-    if (state.seed == null) {
-      state.seed = Math.random().toFixed(5);
-    }
-    Math.seedrandom(state.seed);
+
     return state;
   }
 
@@ -262,7 +282,7 @@ export class State {
     getHideProps(this).forEach(prop => {
       props.push(`${prop}=${this[prop]}`);
     });
-    window.location.hash = props.join("&");
+    // window.location.hash = props.join("&");
   }
 
   /** Returns all the hidden properties. */
