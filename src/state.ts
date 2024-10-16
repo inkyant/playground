@@ -262,6 +262,7 @@ export class State {
    * Serializes the state into the url hash.
    */
   serialize() {
+    return;
     // Serialize regular properties.
     let props: string[] = [];
     State.PROPS.forEach(({name, type, keyMap}) => {
