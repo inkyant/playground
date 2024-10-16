@@ -165,7 +165,6 @@ export class State {
   seed: string;
 
   showTestData_hide=true;
-  // stepButton_hide=true;
   activation_hide=true;
   noise_hide=true;
   batchSize_hide=true;
@@ -176,8 +175,18 @@ export class State {
   learningRate_hide=true;
   regularizationRate_hide=true;
   percTrainData_hide=true;
-  numHiddenLayers_hide=true
-  // xSquared_hide=true;
+  numHiddenLayers_hide=true;
+
+  stepButton_hide=true;
+  xSquared_hide=true;
+  ySquared_hide=true;
+  xTimesY_hide=true;
+  sinX_hide=true;
+  sinY_hide=true;
+  dataset_hide=true;
+  problem_hide=true;
+
+  section = 0;
 
   /**
    * Deserializes the state from the url hash.
@@ -186,74 +195,88 @@ export class State {
 
     
     let state = new State();
+
     state.seed = Math.random().toFixed(5);
     Math.seedrandom(state.seed);
+
+    let value = window.location.hash.slice(1)
+    if (value == "part2_learning") {
+      state.section = 1
+    } else if (value == "part3_fasd") {
+      state.section = 2
+    }
+
+    if (state.section > 0) {
+      state.stepButton_hide=false;
+      state.xSquared_hide=false;
+      state.ySquared_hide=false;
+      state.xTimesY_hide=false;
+      state.sinX_hide=false;
+      state.sinY_hide=false;
+      state.dataset_hide=false;
+      state.problem_hide=false;
+    } 
+
     return state;
 
-    let map: {[key: string]: string} = {};
-    for (let keyvalue of window.location.hash.slice(1).split("&")) {
-      let [name, value] = keyvalue.split("=");
-      map[name] = value;
-    }
+    // function hasKey(name: string): boolean {
+    //   return name in map && map[name] != null && map[name].trim() !== "";
+    // }
 
-    function hasKey(name: string): boolean {
-      return name in map && map[name] != null && map[name].trim() !== "";
-    }
-
-    function parseArray(value: string): string[] {
-      return value.trim() === "" ? [] : value.split(",");
-    }
+    // function parseArray(value: string): string[] {
+    //   return value.trim() === "" ? [] : value.split(",");
+    // }
 
     // Deserialize regular properties.
-    State.PROPS.forEach(({name, type, keyMap}) => {
-      switch (type) {
-        case Type.OBJECT:
-          if (keyMap == null) {
-            throw Error("A key-value map must be provided for state " +
-                "variables of type Object");
-          }
-          if (hasKey(name) && map[name] in keyMap) {
-            state[name] = keyMap[map[name]];
-          }
-          break;
-        case Type.NUMBER:
-          if (hasKey(name)) {
-            // The + operator is for converting a string to a number.
-            state[name] = +map[name];
-          }
-          break;
-        case Type.STRING:
-          if (hasKey(name)) {
-            state[name] = map[name];
-          }
-          break;
-        case Type.BOOLEAN:
-          if (hasKey(name)) {
-            state[name] = (map[name] === "false" ? false : true);
-          }
-          break;
-        case Type.ARRAY_NUMBER:
-          if (name in map) {
-            state[name] = parseArray(map[name]).map(Number);
-          }
-          break;
-        case Type.ARRAY_STRING:
-          if (name in map) {
-            state[name] = parseArray(map[name]);
-          }
-          break;
-        default:
-          throw Error("Encountered an unknown type for a state variable");
-      }
-    });
+    // State.PROPS.forEach(({name, type, keyMap}) => {
+    //   switch (type) {
+    //     case Type.OBJECT:
+    //       if (keyMap == null) {
+    //         throw Error("A key-value map must be provided for state " +
+    //             "variables of type Object");
+    //       }
+    //       if (hasKey(name) && map[name] in keyMap) {
+    //         state[name] = keyMap[map[name]];
+    //       }
+    //       break;
+    //     case Type.NUMBER:
+    //       if (hasKey(name)) {
+    //         // The + operator is for converting a string to a number.
+    //         state[name] = +map[name];
+    //       }
+    //       break;
+    //     case Type.STRING:
+    //       if (hasKey(name)) {
+    //         state[name] = map[name];
+    //       }
+    //       break;
+    //     case Type.BOOLEAN:
+    //       if (hasKey(name)) {
+    //         state[name] = (map[name] === "false" ? false : true);
+    //       }
+    //       break;
+    //     case Type.ARRAY_NUMBER:
+    //       if (name in map) {
+    //         state[name] = parseArray(map[name]).map(Number);
+    //       }
+    //       break;
+    //     case Type.ARRAY_STRING:
+    //       if (name in map) {
+    //         state[name] = parseArray(map[name]);
+    //       }
+    //       break;
+    //     default:
+    //       throw Error("Encountered an unknown type for a state variable");
+    //   }
+    // });
 
-    // Deserialize state properties that correspond to hiding UI controls.
-    getHideProps(map).forEach(prop => {
-      state[prop] = (map[prop] === "true") ? true : false;
-    });
-    state.numHiddenLayers = state.networkShape.length;
+    // // Deserialize state properties that correspond to hiding UI controls.
+    // getHideProps(map).forEach(prop => {
+    //   state[prop] = (map[prop] === "true") ? true : false;
+    // });
+    // state.numHiddenLayers = state.networkShape.length;
 
-    return state;
+    // return state;
   }
 
   /**
