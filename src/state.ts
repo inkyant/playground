@@ -186,9 +186,7 @@ export class State {
 
     
     let state = new State();
-    if (state.seed == null) {
-      state.seed = Math.random().toFixed(5);
-    }
+    state.seed = Math.random().toFixed(5);
     Math.seedrandom(state.seed);
     return state;
 
