@@ -186,6 +186,8 @@ export class State {
   dataset_hide=true;
   problem_hide=true;
 
+  topControls_hide=true;
+
   section = 0;
 
   /**
@@ -200,14 +202,13 @@ export class State {
     Math.seedrandom(state.seed);
 
     let value = window.location.hash.slice(1)
-    if (value == "part2_learning") {
+    if (value == "part2") {
       state.section = 1
-    } else if (value == "part3_fasd") {
+    } else if (value == "part3") {
       state.section = 2
     }
 
     if (state.section > 0) {
-      state.stepButton_hide=false;
       state.xSquared_hide=false;
       state.ySquared_hide=false;
       state.xTimesY_hide=false;
@@ -215,7 +216,12 @@ export class State {
       state.sinY_hide=false;
       state.dataset_hide=false;
       state.problem_hide=false;
-    } 
+    }
+
+    if (state.section > 1) {
+      state.stepButton_hide=false;
+      state.topControls_hide=false;
+    }
 
     return state;
 
