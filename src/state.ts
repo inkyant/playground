@@ -174,7 +174,7 @@ export class State {
   playButton_hide=true;
   learningRate_hide=true;
   regularizationRate_hide=true;
-  // percTrainData_hide=true;
+  percTrainData_hide=true;
   numHiddenLayers_hide=true;
 
   stepButton_hide=true;
