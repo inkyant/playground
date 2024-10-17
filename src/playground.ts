@@ -518,14 +518,14 @@ function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean,
       heatMap.updateBackground(boundary[nn.getOutputNode(network).id],
           state.discretize);
     });
-  if (isInput) {
-    div.on("click", function() {
-      state[nodeId] = !state[nodeId];
-      parametersChanged = true;
-      reset();
-    });
-    div.style("cursor", "pointer");
-  }
+  // if (isInput) {
+  //   div.on("click", function() {
+  //     state[nodeId] = !state[nodeId];
+  //     parametersChanged = true;
+  //     reset();
+  //   });
+  //   div.style("cursor", "pointer");
+  // }
   if (isInput) {
     div.classed(activeOrNotClass, true);
   }
