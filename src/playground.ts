@@ -722,6 +722,9 @@ function updateHoverCard(type: HoverType, nodeOrLink?: nn.Node | nn.Link,
         } else {
           (nodeOrLink as nn.Node).bias = +this.value;
         }
+        // Compute the loss.
+        lossTrain = getLoss(network, trainData);
+        lossTest = getLoss(network, testData);
         updateUI();
       }
     });

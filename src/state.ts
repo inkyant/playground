@@ -174,7 +174,7 @@ export class State {
   playButton_hide=true;
   learningRate_hide=true;
   regularizationRate_hide=true;
-  percTrainData_hide=true;
+  // percTrainData_hide=true;
   numHiddenLayers_hide=true;
 
   stepButton_hide=true;
@@ -209,11 +209,11 @@ export class State {
     }
 
     if (state.section > 0) {
-      state.xSquared_hide=false;
-      state.ySquared_hide=false;
-      state.xTimesY_hide=false;
-      state.sinX_hide=false;
-      state.sinY_hide=false;
+      // state.xSquared_hide=false;
+      // state.ySquared_hide=false;
+      // state.xTimesY_hide=false;
+      // state.sinX_hide=false;
+      // state.sinY_hide=false;
       state.dataset_hide=false;
       state.problem_hide=false;
     }
