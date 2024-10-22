@@ -188,6 +188,7 @@ export class State {
 
   topControls_hide=true;
   dataSection_hide=true;
+  lossLineChart_hide=true;
 
   section = 0;
 
@@ -222,6 +223,7 @@ export class State {
     if (state.section > 1) {
       state.stepButton_hide=false;
       state.topControls_hide=false;
+      state.lossLineChart_hide=false;
     }
 
     return state;

@@ -175,6 +175,7 @@ let iter = 0;
 let trainData: Example2D[] = [];
 let testData: Example2D[] = [];
 let network: nn.Node[][] = null;
+let accuracyTrain = 0;
 let lossTrain = 0;
 let lossTest = 0;
 let player = new Player();
@@ -729,6 +730,7 @@ function updateHoverCard(type: HoverType, nodeOrLink?: nn.Node | nn.Link,
           (nodeOrLink as nn.Node).bias = +this.value;
         }
         // Compute the loss.
+        accuracyTrain = getAccuracy(network, trainData)
         lossTrain = getLoss(network, trainData);
         lossTest = getLoss(network, testData);
         updateUI();
@@ -858,6 +860,20 @@ function getLoss(network: nn.Node[][], dataPoints: Example2D[]): number {
   return loss / dataPoints.length;
 }
 
+
+function getAccuracy(network: nn.Node[][], dataPoints: Example2D[]): number {
+  let num_right = 0;
+  for (let i = 0; i < dataPoints.length; i++) {
+    let dataPoint = dataPoints[i];
+    let input = constructInput(dataPoint.x, dataPoint.y);
+    let output = nn.forwardProp(network, input);
+    if ((output > 0 && dataPoint.label > 0) || (output < 0 && dataPoint.label < 0)) {
+      num_right += 1;
+    }
+  }
+  return num_right / dataPoints.length;
+}
+
 function updateUI(firstStep = false) {
   // Update the links visually.
   updateWeightsUI(network, d3.select("g.core"));
@@ -890,10 +906,12 @@ function updateUI(firstStep = false) {
   }
 
   // Update loss and iteration number.
-  d3.select("#loss-train").text(humanReadable(lossTrain));
-  d3.select("#loss-test").text(humanReadable(lossTest));
+  d3.select("#loss-train").text(humanReadable(accuracyTrain));
+  d3.select("#loss-test").text(humanReadable(accuracyTrain));
   d3.select("#iter-number").text(addCommas(zeroPad(iter)));
-  lineChart.addDataPoint([lossTrain, lossTest]);
+  if (accuracyTrain > 0.6) {
+    lineChart.addDataPoint([accuracyTrain, 0])
+  }
 }
 
 function constructInputIds(): string[] {
@@ -927,6 +945,7 @@ function oneStep(): void {
     }
   });
   // Compute the loss.
+  accuracyTrain = getAccuracy(network, trainData)
   lossTrain = getLoss(network, trainData);
   lossTest = getLoss(network, testData);
   updateUI();
@@ -967,6 +986,7 @@ function reset(onStartup=false) {
       nn.Activations.LINEAR : nn.Activations.TANH;
   network = nn.buildNetwork(shape, state.activation, outputActivation,
       state.regularization, constructInputIds(), state.initZero);
+  accuracyTrain = getAccuracy(network, trainData)
   lossTrain = getLoss(network, trainData);
   lossTest = getLoss(network, testData);
   drawNetwork(network);
