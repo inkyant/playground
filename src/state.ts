@@ -187,6 +187,7 @@ export class State {
   problem_hide=true;
 
   topControls_hide=true;
+  dataSection_hide=true;
 
   section = 0;
 
@@ -215,7 +216,7 @@ export class State {
       // state.sinX_hide=false;
       // state.sinY_hide=false;
       state.dataset_hide=false;
-      state.problem_hide=false;
+      state.dataSection_hide=false;
     }
 
     if (state.section > 1) {

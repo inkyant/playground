@@ -15,6 +15,7 @@ limitations under the License.
 
 import {Example2D} from "./dataset";
 import * as d3 from 'd3';
+import { colorScaleClass } from "./playground";
 
 export interface HeatMapSettings {
   [key: string]: any;
@@ -200,7 +201,7 @@ export class HeatMap {
         cx: (d: Example2D) => this.xScale(d.x),
         cy: (d: Example2D) => this.yScale(d.y),
       })
-      .style("fill", d => this.color(d.label));
+      .style("fill", d => colorScaleClass(d.label));
 
     // Remove points if the length has gone down.
     selection.exit().remove();

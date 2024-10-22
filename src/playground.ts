@@ -165,6 +165,12 @@ let colorScale = d3.scale.linear<string, number>()
                      .domain([-1, 0, 1])
                      .range(["#f59322", "#e8eaeb", "#0877bd"])
                      .clamp(true);
+
+export const colorScaleClass = d3.scale.linear<string, number>()
+                     .domain([-1, 0, 1])
+                     .range(["#ff4124", "#e8eaeb", "#15eb20"])
+                     .clamp(true);
+
 let iter = 0;
 let trainData: Example2D[] = [];
 let testData: Example2D[] = [];
@@ -201,10 +207,10 @@ function makeGUI() {
     oneStep();
   });
 
-  d3.select("#data-regen-button").on("click", () => {
-    generateData();
-    parametersChanged = true;
-  });
+  // d3.select("#data-regen-button").on("click", () => {
+  //   generateData();
+  //   parametersChanged = true;
+  // });
 
   let dataThumbnails = d3.selectAll("canvas[data-dataset]");
   dataThumbnails.on("click", function() {
@@ -396,7 +402,7 @@ function makeGUI() {
 
 function updateBiasesUI(network: nn.Node[][]) {
   nn.forEachNode(network, true, node => {
-    d3.select(`rect#bias-${node.id}`).style("fill", colorScale(node.bias));
+    d3.select(`rect#bias-${node.id}`).style("fill", colorScaleClass(node.bias));
   });
 }
 
@@ -1003,7 +1009,7 @@ function drawDatasetThumbnails() {
     let context = canvas.getContext("2d");
     let data = dataGenerator(200, 0);
     data.forEach(function(d) {
-      context.fillStyle = colorScale(d.label);
+      context.fillStyle = colorScaleClass(d.label);
       context.fillRect(w * (d.x + 6) / 12, h * (d.y + 6) / 12, 4, 4);
     });
     d3.select(canvas.parentNode).style("display", null);
