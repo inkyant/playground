@@ -136,7 +136,7 @@ limitations under the License.
 
     <!--  Data Column-->
     <div class="column data">
-      <h4>
+      <h4 class="ui-dataSection">
         <span>Data</span>
       </h4>
       <div class="control ui-problem">
@@ -190,9 +190,9 @@ limitations under the License.
             <input class="mdl-slider mdl-js-slider" type="range" id="batchSize" min="1" max="30" step="1">
           </p>
         </div>
-          <button class="basic-button" id="data-regen-button" title="Regenerate data">
+          <!-- <button class="basic-button" id="data-regen-button" title="Regenerate data">
             Regenerate
-          </button>
+          </button> -->
       </div>
     </div>
 
@@ -275,11 +275,11 @@ limitations under the License.
       </div>
       <div id="heatmap"></div>
       <div style="float:left;margin-top:20px">
-        <div style="display:flex; align-items:center;">
+        <div style="display:flex; align-items:center; flex-direction: column;">
 
           <!-- Gradient color scale -->
-          <div class="label" style="width:105px; margin-right: 10px">
-            Colors shows data, neuron and weight values.
+          <div class="label" style="margin-bottom: 10px">
+            In the output graph, the dots are colored red or green depending on their class. The background color shows what the model is predicting for a particular area.
           </div>
           <svg width="150" height="30" id="colormap">
             <defs>
